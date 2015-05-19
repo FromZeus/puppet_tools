@@ -1,0 +1,12 @@
+FirstFileName: "pp_files/init_upstream.pp"
+SecondFileName: "pp_files/heat.pp"
+FirstClassName: "heat"
+SecondClassName: "openstack::heat"
+
+# Replace item in second class if it's in
+# the first class
+ReplaceOnMerge: True
+# Get difference between first class
+# and second with items which only names of
+# parameters are different
+DiffOnlyParamNames: True
