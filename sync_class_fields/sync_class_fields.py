@@ -63,6 +63,11 @@ def same_class(class1, class2, only_params = True):
           same[param] = val
   return same
 
+def sync_classes(old_class, new_class, general_class):
+  diff_old_new = diff_class(general_class, old_class, True)
+  general_diff = diff_class(general_class, diff_old_new, True)
+  return merge_class(general_diff, new_class)
+
 def generate_output(out_class, out_name):
   new_pp = open(out_name, "w+")
 
@@ -88,8 +93,11 @@ def main():
   for line in tempConf:
     first_file_name = line["FirstFileName"]
     second_file_name = line["SecondFileName"]
+    third_file_name = line["ThirdFileName"]
     first_class_name = line["FirstClassName"]
     second_class_name = line["SecondClassName"]
+    third_class_name = line["ThirdClassName"]
+    actions_to_do = line["ActionsToDo"]
 
     replace_on_merge = line["ReplaceOnMerge"]
     diff_only_param_names = line["DiffOnlyParamNames"]
@@ -99,16 +107,28 @@ def main():
   try:
     first_class = load_class(first_class_name, first_file_name)
     second_class = load_class(second_class_name, second_file_name)
-  except IndexError:
+  except (IndexError, IOError):
     print "Please, specify classes with them files in config.yaml"
     raise SystemExit
 
-  merged_class = merge_class(first_class, second_class, replace_on_merge)
-  generate_output(merged_class, "merged {0} with {1}.pp".format(first_class_name, second_class_name))
-  differ_class = diff_class(first_class, second_class, diff_only_param_names)
-  generate_output(differ_class, "diff {0} with {1}.pp".format(first_class_name, second_class_name))
-  same_class_fields = same_class(first_class, second_class, same_only_param_names)
-  generate_output(differ_class, "same {0} with {1}.pp".format(first_class_name, second_class_name))
+  if "merge" in actions_to_do:
+    merged_class = merge_class(first_class, second_class, replace_on_merge)
+    generate_output(merged_class, "merged {0} with {1}.pp".format(first_class_name, second_class_name))
+  if "diff" in actions_to_do:
+    differ_class = diff_class(first_class, second_class, diff_only_param_names)
+    generate_output(differ_class, "diff {0} with {1}.pp".format(first_class_name, second_class_name))
+  if "same" in actions_to_do:
+    same_class_fields = same_class(first_class, second_class, same_only_param_names)
+    generate_output(differ_class, "same {0} with {1}.pp".format(first_class_name, second_class_name))
+  if "sync" in actions_to_do:
+    try:
+      third_class = load_class(third_class_name, third_file_name)
+    except (IndexError, IOError):
+      print "Please, specify classes with them files in config.yaml"
+      raise SystemExit
+    synced = sync_classes(first_class, second_class, third_class)
+    generate_output(synced, "sync {0} and {1} in {2}.pp".format(first_class_name, second_class_name, third_class_name))
+
 
 if __name__ == '__main__':
   main()

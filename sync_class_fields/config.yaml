@@ -1,7 +1,9 @@
-FirstFileName: "pp_files/heat.pp"
+FirstFileName: "pp_files/init.pp"
 SecondFileName: "pp_files/init_upstream.pp"
-FirstClassName: "openstack::heat"
+ThirdFileName: "pp_files/heat.pp"
+FirstClassName: "heat"
 SecondClassName: "heat"
+ThirdClassName: "openstack::heat"
 
 # Replace item in second class if it's in
 # the first class
@@ -14,3 +16,9 @@ DiffOnlyParamNames: True
 # only when names of parameters
 # are equal
 SameOnlyParamNames: True
+
+# If "True" then syncing of classes
+# will be made
+SyncClasses: True
+# Allowed: "merge", "diff", "same", "sync"
+ActionsToDo: ["diff"]
