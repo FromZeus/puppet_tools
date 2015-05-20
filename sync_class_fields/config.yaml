@@ -1,7 +1,7 @@
-FirstFileName: "pp_files/init_upstream.pp"
-SecondFileName: "pp_files/heat.pp"
-FirstClassName: "heat"
-SecondClassName: "openstack::heat"
+FirstFileName: "pp_files/heat.pp"
+SecondFileName: "pp_files/init_upstream.pp"
+FirstClassName: "openstack::heat"
+SecondClassName: "heat"
 
 # Replace item in second class if it's in
 # the first class

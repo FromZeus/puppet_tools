@@ -52,6 +52,17 @@ def diff_class(class1, class2, only_params = False):
         diff[param] = val
   return diff
 
+def same_class(class1, class2, only_params = True):
+  same = dict()
+  for param, val in class1.iteritems():
+    if class2.has_key(param):
+      if only_params:
+        same[param] = val
+      else:
+        if class2[param] == val:
+          same[param] = val
+  return same
+
 def generate_output(out_class, out_name):
   new_pp = open(out_name, "w+")
 
