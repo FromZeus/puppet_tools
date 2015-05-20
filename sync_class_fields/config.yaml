@@ -10,3 +10,7 @@ ReplaceOnMerge: True
 # and second with items which only names of
 # parameters are different
 DiffOnlyParamNames: True
+# Get same class2 to class1 fileds
+# only when names of parameters
+# are equal
+SameOnlyParamNames: True

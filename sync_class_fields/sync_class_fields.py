@@ -93,19 +93,22 @@ def main():
 
     replace_on_merge = line["ReplaceOnMerge"]
     diff_only_param_names = line["DiffOnlyParamNames"]
+    same_only_param_names = line["SameOnlyParamNames"]
 
   #pdb.set_trace()
   try:
     first_class = load_class(first_class_name, first_file_name)
     second_class = load_class(second_class_name, second_file_name)
   except IndexError:
-    print "Please, specify arguments as: file_with_class1 class1 file_with_class2 class2"
+    print "Please, specify classes with them files in config.yaml"
     raise SystemExit
 
   merged_class = merge_class(first_class, second_class, replace_on_merge)
   generate_output(merged_class, "merged {0} with {1}.pp".format(first_class_name, second_class_name))
   differ_class = diff_class(first_class, second_class, diff_only_param_names)
   generate_output(differ_class, "diff {0} with {1}.pp".format(first_class_name, second_class_name))
+  same_class_fields = same_class(first_class, second_class, same_only_param_names)
+  generate_output(differ_class, "same {0} with {1}.pp".format(first_class_name, second_class_name))
 
 if __name__ == '__main__':
   main()
